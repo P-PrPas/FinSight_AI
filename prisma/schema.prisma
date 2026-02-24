@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String        @id @default(cuid())
+  email         String        @unique
+  name          String?
+  password      String
+  streakCount   Int           @default(0)
+  lastLoginDate DateTime?
+  healthScore   Int           @default(100)
+  persona       String        @default("ผู้เริ่มต้น")
+  personaEmoji  String        @default("🌱")
+  transactions  Transaction[]
+  budgets       Budget[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount      Float
+  description String
+  type        String   // "income" or "expense"
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  tags        String?  // comma-separated tags
+  isWidget    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Category {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  icon         String
+  transactions Transaction[]
+}
+
+model Budget {
+  id         String @id @default(cuid())
+  userId     String
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId String?
+  amount     Float
+  month      Int
+  year       Int
+
+  @@unique([userId, categoryId, month, year])
+}
