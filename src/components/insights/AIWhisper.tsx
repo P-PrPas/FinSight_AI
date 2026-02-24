@@ -15,19 +15,19 @@ export default function AIWhisper({ message, healthStatus }: AIWhisperProps) {
 
     const statusConfig = {
         good: {
-            bg: "rgba(46, 213, 115, 0.08)",
-            border: "rgba(46, 213, 115, 0.2)",
-            iconColor: "var(--color-success)",
+            bg: "rgba(0, 184, 148, 0.06)",
+            border: "rgba(0, 184, 148, 0.12)",
+            accent: "var(--color-success)",
         },
         warning: {
-            bg: "rgba(255, 165, 2, 0.08)",
-            border: "rgba(255, 165, 2, 0.2)",
-            iconColor: "var(--color-warning)",
+            bg: "rgba(253, 203, 110, 0.06)",
+            border: "rgba(253, 203, 110, 0.12)",
+            accent: "var(--color-warning)",
         },
         critical: {
-            bg: "rgba(255, 71, 87, 0.08)",
-            border: "rgba(255, 71, 87, 0.2)",
-            iconColor: "var(--color-critical)",
+            bg: "rgba(225, 112, 85, 0.06)",
+            border: "rgba(225, 112, 85, 0.12)",
+            accent: "var(--color-critical)",
         },
     };
 
@@ -35,28 +35,34 @@ export default function AIWhisper({ message, healthStatus }: AIWhisperProps) {
 
     return (
         <div
-            className="relative rounded-2xl p-4 animate-fade-in-up"
+            className="relative rounded-2xl p-4 animate-fade-in-up overflow-hidden"
             style={{
                 background: config.bg,
                 border: `1px solid ${config.border}`,
             }}>
+            {/* Left accent bar */}
+            <div className="absolute left-0 top-3 bottom-3 w-[3px] rounded-full"
+                style={{ background: config.accent }} />
+
             <button
                 onClick={() => setDismissed(true)}
-                className="absolute top-3 right-3 p-1 rounded-full transition-colors hover:bg-white/5"
+                className="absolute top-3 right-3 p-1.5 rounded-lg transition-colors hover:bg-white/5"
                 style={{ color: "var(--color-text-muted)" }}>
                 <X className="w-3.5 h-3.5" />
             </button>
-            <div className="flex items-start gap-3 pr-6">
+
+            <div className="flex items-start gap-3 pl-3 pr-6">
                 <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-                    style={{ background: `${config.border}`, color: config.iconColor }}>
-                    <MessageCircle className="w-4 h-4" />
+                    className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+                    style={{ background: config.border }}>
+                    <MessageCircle className="w-4 h-4" style={{ color: config.accent }} />
                 </div>
                 <div>
-                    <p className="text-[10px] uppercase tracking-wider font-medium mb-1" style={{ color: "var(--color-text-muted)" }}>
-                        AI Whisper 💬
+                    <p className="text-[10px] uppercase tracking-widest font-semibold mb-1"
+                        style={{ color: "var(--color-text-muted)" }}>
+                        AI Whisper
                     </p>
-                    <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-primary)" }}>
+                    <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
                         {message}
                     </p>
                 </div>

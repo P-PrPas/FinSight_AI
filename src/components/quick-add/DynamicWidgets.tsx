@@ -19,19 +19,6 @@ export default function DynamicWidgets() {
             setLoadingIndex(index);
 
             try {
-                const res = await fetch("/api/transactions", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        amount: widget.amount,
-                        description: widget.label,
-                        type: "expense",
-                        categoryId: "",
-                        isWidget: true,
-                    }),
-                });
-
-                // Need to get categoryId from categories first
                 const catRes = await fetch("/api/categories");
                 const categories = await catRes.json();
                 const category = categories.find(
@@ -39,7 +26,7 @@ export default function DynamicWidgets() {
                 );
 
                 if (category) {
-                    const actualRes = await fetch("/api/transactions", {
+                    const res = await fetch("/api/transactions", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
@@ -51,8 +38,8 @@ export default function DynamicWidgets() {
                         }),
                     });
 
-                    if (actualRes.ok) {
-                        const transaction = await actualRes.json();
+                    if (res.ok) {
+                        const transaction = await res.json();
                         addTransaction(transaction);
                         setSuccessIndex(index);
                         setTimeout(() => setSuccessIndex(null), 2000);
@@ -86,13 +73,13 @@ export default function DynamicWidgets() {
             {widgets.map((widget, index) => (
                 <div key={index} className="relative">
                     {editingIndex === index ? (
-                        <div
-                            className="rounded-2xl p-3 border animate-fade-in-up"
+                        <div className="rounded-2xl p-4"
                             style={{
-                                background: "var(--color-bg-card)",
-                                borderColor: "var(--color-accent)",
+                                background: "rgba(22, 22, 35, 0.6)",
+                                border: "1px solid var(--color-accent)",
+                                boxShadow: "0 0 20px rgba(108, 92, 231, 0.1)",
                             }}>
-                            <div className="flex items-center gap-2 mb-2">
+                            <div className="flex items-center gap-2 mb-3">
                                 <span className="text-xl">{widget.icon}</span>
                                 <span className="text-sm font-medium">{widget.label}</span>
                             </div>
@@ -101,12 +88,7 @@ export default function DynamicWidgets() {
                                     type="number"
                                     value={editAmount}
                                     onChange={(e) => setEditAmount(e.target.value)}
-                                    className="w-full px-3 py-1.5 rounded-lg text-sm border focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]"
-                                    style={{
-                                        background: "var(--color-bg-input)",
-                                        borderColor: "var(--color-border)",
-                                        color: "var(--color-text-primary)",
-                                    }}
+                                    className="input-field py-2 text-sm"
                                     autoFocus
                                     onKeyDown={(e) => {
                                         if (e.key === "Enter") handleEditConfirm(widget, index);
@@ -115,7 +97,7 @@ export default function DynamicWidgets() {
                                 />
                                 <button
                                     onClick={() => handleEditConfirm(widget, index)}
-                                    className="px-3 py-1.5 rounded-lg text-xs font-medium text-white"
+                                    className="px-3 py-2 rounded-xl text-xs font-semibold text-white flex-shrink-0"
                                     style={{ background: "var(--color-accent)" }}>
                                     ✓
                                 </button>
@@ -129,34 +111,41 @@ export default function DynamicWidgets() {
                                 handleLongPress(index, widget.amount);
                             }}
                             disabled={loadingIndex !== null}
-                            className="widget-btn w-full rounded-2xl p-4 border text-left transition-all duration-200"
+                            className="widget-btn w-full rounded-2xl p-4 text-left transition-all duration-200"
                             style={{
                                 background:
                                     successIndex === index
-                                        ? "rgba(46, 213, 115, 0.1)"
-                                        : "var(--color-bg-card)",
-                                borderColor:
-                                    successIndex === index
-                                        ? "var(--color-success)"
-                                        : "var(--color-border)",
+                                        ? "rgba(0, 184, 148, 0.08)"
+                                        : "rgba(22, 22, 35, 0.5)",
+                                border: `1px solid ${successIndex === index
+                                    ? "rgba(0, 184, 148, 0.15)"
+                                    : "rgba(255,255,255,0.04)"
+                                    }`,
                             }}>
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2.5">
-                                    <span className="text-2xl">{widget.icon}</span>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+                                        style={{ background: "rgba(255,255,255,0.04)" }}>
+                                        {widget.icon}
+                                    </div>
                                     <div>
-                                        <p className="text-sm font-medium" style={{ color: "var(--color-text-primary)" }}>
+                                        <p className="text-sm font-medium"
+                                            style={{ color: "var(--color-text-primary)" }}>
                                             {widget.label}
                                         </p>
-                                        <p className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
+                                        <p className="text-xs tabular-nums"
+                                            style={{ color: "var(--color-text-muted)" }}>
                                             {widget.amount}฿
                                         </p>
                                     </div>
                                 </div>
                                 <div>
                                     {loadingIndex === index ? (
-                                        <Loader2 className="w-4 h-4 animate-spin" style={{ color: "var(--color-accent)" }} />
+                                        <Loader2 className="w-4 h-4 animate-spin"
+                                            style={{ color: "var(--color-accent)" }} />
                                     ) : successIndex === index ? (
-                                        <Check className="w-4 h-4" style={{ color: "var(--color-success)" }} />
+                                        <Check className="w-4 h-4"
+                                            style={{ color: "var(--color-success)" }} />
                                     ) : null}
                                 </div>
                             </div>

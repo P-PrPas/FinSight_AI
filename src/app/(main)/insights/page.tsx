@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { formatCurrency } from "@/lib/utils";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
 
-const COLORS = ["#6c5ce7", "#a29bfe", "#00d2d3", "#ff6b6b", "#ffa502", "#2ed573", "#ff4757", "#1e90ff"];
+const COLORS = ["#6c5ce7", "#a29bfe", "#00cec9", "#ff7675", "#fdcb6e", "#00b894", "#e17055", "#74b9ff"];
 
 export default function InsightsPage() {
     const { data: session } = useSession();
@@ -51,7 +51,7 @@ export default function InsightsPage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">
-                <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin"
+                <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin"
                     style={{ borderColor: "var(--color-accent)", borderTopColor: "transparent" }} />
             </div>
         );
@@ -59,68 +59,81 @@ export default function InsightsPage() {
 
     const pieData = categoryData.map((c) => ({ name: c.name, value: c.amount }));
 
+    const tooltipStyle = {
+        background: "rgba(18, 18, 30, 0.95)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        borderRadius: "12px",
+        color: "var(--color-text-primary)",
+        fontSize: "12px",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+    };
+
     return (
-        <div className="p-4 space-y-5 page-enter">
-            <h1 className="text-xl font-bold">📊 วิเคราะห์การเงิน</h1>
+        <div className="px-5 py-6 space-y-5 page-enter">
+            <h1 className="text-2xl font-bold tracking-tight">วิเคราะห์การเงิน</h1>
 
             {/* Summary Stats */}
             <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-2xl p-4 border"
-                    style={{ background: "var(--color-bg-card)", borderColor: "var(--color-border)" }}>
-                    <p className="text-[10px] uppercase tracking-wider mb-1" style={{ color: "var(--color-text-muted)" }}>รายจ่ายเดือนนี้</p>
-                    <p className="text-lg font-bold" style={{ color: "var(--color-expense)" }}>{formatCurrency(summary.totalExpense)}</p>
+                <div className="rounded-2xl p-4"
+                    style={{ background: "rgba(255, 118, 117, 0.06)", border: "1px solid rgba(255,255,255,0.04)" }}>
+                    <p className="text-[10px] uppercase tracking-widest font-semibold mb-1.5"
+                        style={{ color: "var(--color-text-muted)" }}>
+                        รายจ่ายเดือนนี้
+                    </p>
+                    <p className="text-xl font-bold tabular-nums" style={{ color: "var(--color-expense)" }}>
+                        {formatCurrency(summary.totalExpense)}
+                    </p>
                 </div>
-                <div className="rounded-2xl p-4 border"
-                    style={{ background: "var(--color-bg-card)", borderColor: "var(--color-border)" }}>
-                    <p className="text-[10px] uppercase tracking-wider mb-1" style={{ color: "var(--color-text-muted)" }}>รายรับเดือนนี้</p>
-                    <p className="text-lg font-bold" style={{ color: "var(--color-income)" }}>{formatCurrency(summary.totalIncome)}</p>
+                <div className="rounded-2xl p-4"
+                    style={{ background: "rgba(0, 206, 201, 0.06)", border: "1px solid rgba(255,255,255,0.04)" }}>
+                    <p className="text-[10px] uppercase tracking-widest font-semibold mb-1.5"
+                        style={{ color: "var(--color-text-muted)" }}>
+                        รายรับเดือนนี้
+                    </p>
+                    <p className="text-xl font-bold tabular-nums" style={{ color: "var(--color-income)" }}>
+                        {formatCurrency(summary.totalIncome)}
+                    </p>
                 </div>
             </div>
 
             {/* Donut Chart */}
             {categoryData.length > 0 && (
-                <div className="rounded-2xl p-4 border"
-                    style={{ background: "var(--color-bg-card)", borderColor: "var(--color-border)" }}>
-                    <h2 className="text-sm font-semibold mb-3" style={{ color: "var(--color-text-secondary)" }}>
-                        🍩 สัดส่วนค่าใช้จ่าย
-                    </h2>
-                    <div className="h-52">
+                <div className="card p-5">
+                    <div className="section-header">สัดส่วนค่าใช้จ่าย</div>
+                    <div className="h-56">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                                 <Pie
                                     data={pieData}
                                     cx="50%"
                                     cy="50%"
-                                    innerRadius={50}
-                                    outerRadius={80}
+                                    innerRadius={55}
+                                    outerRadius={85}
                                     paddingAngle={3}
-                                    dataKey="value">
+                                    dataKey="value"
+                                    strokeWidth={0}>
                                     {pieData.map((_, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>
                                 <Tooltip
                                     formatter={(value) => formatCurrency(Number(value))}
-                                    contentStyle={{
-                                        background: "var(--color-bg-card)",
-                                        border: "1px solid var(--color-border)",
-                                        borderRadius: "12px",
-                                        color: "var(--color-text-primary)",
-                                        fontSize: "12px",
-                                    }}
+                                    contentStyle={tooltipStyle}
                                 />
                             </PieChart>
                         </ResponsiveContainer>
                     </div>
                     {/* Legend */}
-                    <div className="grid grid-cols-2 gap-2 mt-3">
+                    <div className="grid grid-cols-2 gap-2.5 mt-4">
                         {categoryData.map((cat, i) => (
                             <div key={cat.name} className="flex items-center gap-2">
-                                <div className="w-3 h-3 rounded-sm" style={{ background: COLORS[i % COLORS.length] }} />
+                                <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                                    style={{ background: COLORS[i % COLORS.length] }} />
                                 <span className="text-xs truncate" style={{ color: "var(--color-text-secondary)" }}>
                                     {cat.icon} {cat.name}
                                 </span>
-                                <span className="text-xs font-medium ml-auto" style={{ color: "var(--color-text-primary)" }}>
+                                <span className="text-xs font-semibold ml-auto tabular-nums"
+                                    style={{ color: "var(--color-text-primary)" }}>
                                     {formatCurrency(cat.amount)}
                                 </span>
                             </div>
@@ -131,12 +144,9 @@ export default function InsightsPage() {
 
             {/* Bar Chart */}
             {categoryData.length > 0 && (
-                <div className="rounded-2xl p-4 border"
-                    style={{ background: "var(--color-bg-card)", borderColor: "var(--color-border)" }}>
-                    <h2 className="text-sm font-semibold mb-3" style={{ color: "var(--color-text-secondary)" }}>
-                        📈 รายจ่ายตามหมวดหมู่
-                    </h2>
-                    <div className="h-52">
+                <div className="card p-5">
+                    <div className="section-header">รายจ่ายตามหมวดหมู่</div>
+                    <div className="h-56">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={categoryData} layout="vertical">
                                 <XAxis type="number" hide />
@@ -144,19 +154,15 @@ export default function InsightsPage() {
                                     type="category"
                                     dataKey="name"
                                     width={70}
-                                    tick={{ fontSize: 11, fill: "var(--color-text-secondary)" }}
+                                    tick={{ fontSize: 11, fill: "#9094a6" }}
+                                    axisLine={false}
+                                    tickLine={false}
                                 />
                                 <Tooltip
                                     formatter={(value) => formatCurrency(Number(value))}
-                                    contentStyle={{
-                                        background: "var(--color-bg-card)",
-                                        border: "1px solid var(--color-border)",
-                                        borderRadius: "12px",
-                                        color: "var(--color-text-primary)",
-                                        fontSize: "12px",
-                                    }}
+                                    contentStyle={tooltipStyle}
                                 />
-                                <Bar dataKey="amount" radius={[0, 6, 6, 0]}>
+                                <Bar dataKey="amount" radius={[0, 8, 8, 0]} barSize={18}>
                                     {categoryData.map((_, index) => (
                                         <Cell key={`bar-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
@@ -169,46 +175,52 @@ export default function InsightsPage() {
 
             {/* AI Persona & Insights */}
             {whisper.persona_name && (
-                <div className="rounded-2xl p-4 border"
-                    style={{
-                        background: "linear-gradient(135deg, rgba(108, 92, 231, 0.1), rgba(162, 155, 254, 0.05))",
-                        borderColor: "rgba(108, 92, 231, 0.2)",
-                    }}>
-                    <h2 className="text-sm font-semibold mb-3" style={{ color: "var(--color-text-secondary)" }}>
-                        🧠 AI Insight
-                    </h2>
-                    <div className="space-y-3">
-                        <div className="flex items-center gap-3">
-                            <span className="text-3xl">{whisper.persona_emoji}</span>
-                            <div>
-                                <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>Persona ของคุณ</p>
-                                <p className="text-base font-bold gradient-text">{whisper.persona_name}</p>
+                <div className="card p-5 overflow-hidden relative">
+                    {/* Left accent bar */}
+                    <div className="absolute left-0 top-4 bottom-4 w-[3px] rounded-full"
+                        style={{ background: "linear-gradient(180deg, var(--color-accent), var(--color-accent-light))" }} />
+
+                    <div className="pl-3">
+                        <div className="section-header">AI Insight</div>
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-3">
+                                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+                                    style={{ background: "rgba(108, 92, 231, 0.1)" }}>
+                                    {whisper.persona_emoji}
+                                </div>
+                                <div>
+                                    <p className="text-[10px] uppercase tracking-widest"
+                                        style={{ color: "var(--color-text-muted)" }}>
+                                        Persona ของคุณ
+                                    </p>
+                                    <p className="text-base font-bold gradient-text">{whisper.persona_name}</p>
+                                </div>
                             </div>
+                            {whisper.whisper_message && (
+                                <p className="text-sm leading-relaxed p-3.5 rounded-xl"
+                                    style={{ background: "rgba(108, 92, 231, 0.06)", color: "var(--color-text-secondary)" }}>
+                                    💬 {whisper.whisper_message}
+                                </p>
+                            )}
+                            {whisper.leak_insight && (
+                                <p className="text-sm leading-relaxed p-3.5 rounded-xl"
+                                    style={{ background: "rgba(253, 203, 110, 0.06)", color: "var(--color-text-secondary)" }}>
+                                    🔍 {whisper.leak_insight}
+                                </p>
+                            )}
                         </div>
-                        {whisper.whisper_message && (
-                            <p className="text-sm leading-relaxed p-3 rounded-xl"
-                                style={{ background: "rgba(108, 92, 231, 0.1)", color: "var(--color-text-primary)" }}>
-                                💬 {whisper.whisper_message}
-                            </p>
-                        )}
-                        {whisper.leak_insight && (
-                            <p className="text-sm leading-relaxed p-3 rounded-xl"
-                                style={{ background: "rgba(255, 165, 2, 0.08)", color: "var(--color-text-primary)" }}>
-                                🔍 {whisper.leak_insight}
-                            </p>
-                        )}
                     </div>
                 </div>
             )}
 
             {/* Empty state */}
             {categoryData.length === 0 && (
-                <div className="text-center py-12">
-                    <p className="text-4xl mb-3">📊</p>
-                    <p className="text-sm" style={{ color: "var(--color-text-secondary)" }}>
+                <div className="text-center py-16">
+                    <p className="text-5xl mb-4">📊</p>
+                    <p className="text-sm font-medium" style={{ color: "var(--color-text-secondary)" }}>
                         ยังไม่มีข้อมูลเพียงพอสำหรับการวิเคราะห์
                     </p>
-                    <p className="text-xs mt-1" style={{ color: "var(--color-text-muted)" }}>
+                    <p className="text-xs mt-1.5" style={{ color: "var(--color-text-muted)" }}>
                         เริ่มบันทึกรายรับ-รายจ่ายเพื่อดู Insight!
                     </p>
                 </div>

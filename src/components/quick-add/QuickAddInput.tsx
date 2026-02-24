@@ -51,7 +51,7 @@ export default function QuickAddInput() {
     };
 
     return (
-        <div className="space-y-2">
+        <div className="space-y-3">
             <form onSubmit={handleSubmit} className="relative">
                 <div className="relative flex items-center">
                     <Sparkles
@@ -64,19 +64,17 @@ export default function QuickAddInput() {
                         value={text}
                         onChange={(e) => setText(e.target.value)}
                         placeholder='พิมพ์เช่น "กาแฟ 60" หรือ "เงินเดือน 30000"'
-                        className="w-full pl-11 pr-14 py-4 rounded-2xl border text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
-                        style={{
-                            background: "var(--color-bg-card)",
-                            borderColor: "var(--color-border)",
-                            color: "var(--color-text-primary)",
-                        }}
+                        className="input-field pl-11 pr-14 py-4"
                         disabled={loading}
                     />
                     <button
                         type="submit"
                         disabled={!text.trim() || loading}
-                        className="absolute right-2 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 disabled:opacity-30"
-                        style={{ background: "var(--color-accent)" }}>
+                        className="absolute right-2 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 disabled:opacity-20"
+                        style={{
+                            background: "linear-gradient(135deg, var(--color-accent), var(--color-accent-light))",
+                            boxShadow: text.trim() ? "0 2px 10px rgba(108, 92, 231, 0.3)" : "none",
+                        }}>
                         {loading ? (
                             <Loader2 className="w-4 h-4 text-white animate-spin" />
                         ) : success ? (
@@ -88,30 +86,28 @@ export default function QuickAddInput() {
                 </div>
             </form>
 
-            {/* Success message */}
             {success && successMsg && (
                 <div
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm animate-fade-in-up"
+                    className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm animate-fade-in-up"
                     style={{
-                        background: "rgba(46, 213, 115, 0.1)",
+                        background: "rgba(0, 184, 148, 0.08)",
                         color: "var(--color-success)",
-                        border: "1px solid rgba(46, 213, 115, 0.2)",
+                        border: "1px solid rgba(0, 184, 148, 0.12)",
                     }}>
                     <Check className="w-4 h-4 flex-shrink-0" />
                     {successMsg}
                 </div>
             )}
 
-            {/* Error message */}
             {error && (
                 <div
-                    className="px-4 py-2.5 rounded-xl text-sm animate-fade-in-up"
+                    className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm animate-fade-in-up"
                     style={{
-                        background: "rgba(255, 71, 87, 0.1)",
+                        background: "rgba(225, 112, 85, 0.08)",
                         color: "var(--color-critical)",
-                        border: "1px solid rgba(255, 71, 87, 0.2)",
+                        border: "1px solid rgba(225, 112, 85, 0.12)",
                     }}>
-                    {error}
+                    <span>⚠️</span> {error}
                 </div>
             )}
         </div>

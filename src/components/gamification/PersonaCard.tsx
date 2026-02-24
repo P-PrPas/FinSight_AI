@@ -7,25 +7,23 @@ interface PersonaCardProps {
 
 export default function PersonaCard({ name, emoji }: PersonaCardProps) {
     return (
-        <div
-            className="flex items-center gap-3 px-4 py-3 rounded-2xl border animate-float"
-            style={{
-                background: "linear-gradient(135deg, rgba(108, 92, 231, 0.1), rgba(162, 155, 254, 0.05))",
-                borderColor: "rgba(108, 92, 231, 0.2)",
-            }}>
+        <div className="flex items-center gap-3">
             <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+                className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl"
                 style={{
-                    background: "linear-gradient(135deg, var(--color-bg-card), var(--color-bg-card-hover))",
-                    border: "1px solid var(--color-border)",
+                    background: "linear-gradient(135deg, rgba(108, 92, 231, 0.15), rgba(162, 155, 254, 0.08))",
+                    border: "1px solid rgba(108, 92, 231, 0.12)",
                 }}>
-                {emoji}
+                {emoji || "🌱"}
             </div>
             <div>
-                <p className="text-[10px] uppercase tracking-wider font-medium" style={{ color: "var(--color-text-muted)" }}>
+                <p className="text-[10px] uppercase tracking-widest font-semibold"
+                    style={{ color: "var(--color-text-muted)" }}>
                     Persona
                 </p>
-                <p className="text-sm font-bold gradient-text">{name}</p>
+                <p className="text-sm font-bold gradient-text leading-tight mt-0.5">
+                    {name || "ผู้เริ่มต้น"}
+                </p>
             </div>
         </div>
     );
