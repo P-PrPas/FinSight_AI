@@ -51,6 +51,9 @@ interface AppState {
     setUserInfo: (info: Partial<Pick<AppState, "userName" | "streakCount" | "healthScore" | "persona" | "personaEmoji">>) => void;
     setWhisper: (whisper: Partial<Pick<AppState, "whisperMessage" | "leakInsight" | "healthStatus">>) => void;
     setLoading: (loading: boolean) => void;
+    // Layout
+    isSidebarOpen: boolean;
+    toggleSidebar: () => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -68,6 +71,8 @@ export const useAppStore = create<AppState>((set) => ({
     whisperMessage: "",
     leakInsight: "",
     healthStatus: "good",
+
+    isSidebarOpen: true,
 
     // Actions
     setTransactions: (transactions) => set({ transactions }),
@@ -89,4 +94,5 @@ export const useAppStore = create<AppState>((set) => ({
     setUserInfo: (info) => set(info),
     setWhisper: (whisper) => set(whisper),
     setLoading: (isLoading) => set({ isLoading }),
+    toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
 }));

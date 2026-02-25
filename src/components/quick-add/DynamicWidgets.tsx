@@ -75,11 +75,11 @@ export default function DynamicWidgets() {
                     {editingIndex === index ? (
                         <div className="rounded-2xl p-4"
                             style={{
-                                background: "rgba(22, 22, 35, 0.6)",
+                                background: "linear-gradient(145deg, rgba(16, 16, 28, 0.9), rgba(12, 12, 22, 0.7))",
                                 border: "1px solid var(--color-accent)",
-                                boxShadow: "0 0 20px rgba(108, 92, 231, 0.1)",
+                                boxShadow: "0 0 24px rgba(124, 109, 240, 0.1)",
                             }}>
-                            <div className="flex items-center gap-2 mb-3">
+                            <div className="flex items-center gap-2.5 mb-3">
                                 <span className="text-xl">{widget.icon}</span>
                                 <span className="text-sm font-medium">{widget.label}</span>
                             </div>
@@ -88,7 +88,7 @@ export default function DynamicWidgets() {
                                     type="number"
                                     value={editAmount}
                                     onChange={(e) => setEditAmount(e.target.value)}
-                                    className="input-field py-2 text-sm"
+                                    className="input-field py-2.5 text-sm"
                                     autoFocus
                                     onKeyDown={(e) => {
                                         if (e.key === "Enter") handleEditConfirm(widget, index);
@@ -97,7 +97,7 @@ export default function DynamicWidgets() {
                                 />
                                 <button
                                     onClick={() => handleEditConfirm(widget, index)}
-                                    className="px-3 py-2 rounded-xl text-xs font-semibold text-white flex-shrink-0"
+                                    className="px-3.5 py-2.5 rounded-xl text-xs font-semibold text-white flex-shrink-0"
                                     style={{ background: "var(--color-accent)" }}>
                                     ✓
                                 </button>
@@ -111,20 +111,20 @@ export default function DynamicWidgets() {
                                 handleLongPress(index, widget.amount);
                             }}
                             disabled={loadingIndex !== null}
-                            className="widget-btn w-full rounded-2xl p-4 text-left transition-all duration-200"
+                            className="widget-btn w-full rounded-2xl p-4 text-left"
                             style={{
                                 background:
                                     successIndex === index
-                                        ? "rgba(0, 184, 148, 0.08)"
-                                        : "rgba(22, 22, 35, 0.5)",
+                                        ? "rgba(34, 197, 94, 0.06)"
+                                        : "linear-gradient(145deg, rgba(16, 16, 28, 0.6), rgba(12, 12, 22, 0.4))",
                                 border: `1px solid ${successIndex === index
-                                    ? "rgba(0, 184, 148, 0.15)"
-                                    : "rgba(255,255,255,0.04)"
+                                    ? "rgba(34, 197, 94, 0.15)"
+                                    : "rgba(255,255,255,0.05)"
                                     }`,
                             }}>
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+                                    <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl"
                                         style={{ background: "rgba(255,255,255,0.04)" }}>
                                         {widget.icon}
                                     </div>
@@ -133,7 +133,7 @@ export default function DynamicWidgets() {
                                             style={{ color: "var(--color-text-primary)" }}>
                                             {widget.label}
                                         </p>
-                                        <p className="text-xs tabular-nums"
+                                        <p className="text-xs tabular-nums mt-0.5"
                                             style={{ color: "var(--color-text-muted)" }}>
                                             {widget.amount}฿
                                         </p>

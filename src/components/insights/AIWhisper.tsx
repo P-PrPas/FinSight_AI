@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageCircle, X } from "lucide-react";
+import { MessageCircle, X, Sparkles } from "lucide-react";
 import { useState } from "react";
 
 interface AIWhisperProps {
@@ -15,19 +15,22 @@ export default function AIWhisper({ message, healthStatus }: AIWhisperProps) {
 
     const statusConfig = {
         good: {
-            bg: "rgba(0, 184, 148, 0.06)",
-            border: "rgba(0, 184, 148, 0.12)",
+            bg: "linear-gradient(135deg, rgba(34, 197, 94, 0.06), rgba(52, 211, 153, 0.03))",
+            border: "rgba(34, 197, 94, 0.12)",
             accent: "var(--color-success)",
+            iconBg: "rgba(34, 197, 94, 0.1)",
         },
         warning: {
-            bg: "rgba(253, 203, 110, 0.06)",
-            border: "rgba(253, 203, 110, 0.12)",
+            bg: "linear-gradient(135deg, rgba(251, 191, 36, 0.06), rgba(245, 158, 11, 0.03))",
+            border: "rgba(251, 191, 36, 0.12)",
             accent: "var(--color-warning)",
+            iconBg: "rgba(251, 191, 36, 0.1)",
         },
         critical: {
-            bg: "rgba(225, 112, 85, 0.06)",
-            border: "rgba(225, 112, 85, 0.12)",
+            bg: "linear-gradient(135deg, rgba(248, 113, 113, 0.06), rgba(239, 68, 68, 0.03))",
+            border: "rgba(248, 113, 113, 0.12)",
             accent: "var(--color-critical)",
+            iconBg: "rgba(248, 113, 113, 0.1)",
         },
     };
 
@@ -35,33 +38,36 @@ export default function AIWhisper({ message, healthStatus }: AIWhisperProps) {
 
     return (
         <div
-            className="relative rounded-2xl p-4 animate-fade-in-up overflow-hidden"
+            className="relative rounded-2xl p-5 animate-fade-in-up overflow-hidden"
             style={{
                 background: config.bg,
                 border: `1px solid ${config.border}`,
             }}>
             {/* Left accent bar */}
-            <div className="absolute left-0 top-3 bottom-3 w-[3px] rounded-full"
+            <div className="absolute left-0 top-4 bottom-4 w-[3px] rounded-full"
                 style={{ background: config.accent }} />
 
             <button
                 onClick={() => setDismissed(true)}
-                className="absolute top-3 right-3 p-1.5 rounded-lg transition-colors hover:bg-white/5"
+                className="absolute top-3.5 right-3.5 p-1.5 rounded-lg transition-colors hover:bg-white/5"
                 style={{ color: "var(--color-text-muted)" }}>
                 <X className="w-3.5 h-3.5" />
             </button>
 
-            <div className="flex items-start gap-3 pl-3 pr-6">
+            <div className="flex items-start gap-3.5 pl-3 pr-8">
                 <div
-                    className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
-                    style={{ background: config.border }}>
-                    <MessageCircle className="w-4 h-4" style={{ color: config.accent }} />
+                    className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+                    style={{ background: config.iconBg }}>
+                    <Sparkles className="w-4 h-4" style={{ color: config.accent }} />
                 </div>
-                <div>
-                    <p className="text-[10px] uppercase tracking-widest font-semibold mb-1"
-                        style={{ color: "var(--color-text-muted)" }}>
-                        AI Whisper
-                    </p>
+                <div className="min-w-0">
+                    <div className="flex items-center gap-2 mb-1.5">
+                        <p className="text-[10px] uppercase tracking-[0.12em] font-bold"
+                            style={{ color: "var(--color-text-muted)" }}>
+                            AI Whisper
+                        </p>
+                        <MessageCircle className="w-3 h-3" style={{ color: "var(--color-text-muted)" }} />
+                    </div>
                     <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
                         {message}
                     </p>
